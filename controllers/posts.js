@@ -13,7 +13,7 @@ const getAllPosts = async (req, res) => {
 
 const createPost = (req, res) => {
   try {
-      const {title,description,}
+    //   const {title,description,}
   } catch (err) {
     res.status(404).json({
       message: err.message,
