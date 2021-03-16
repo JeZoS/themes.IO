@@ -21,15 +21,17 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   cont: {
-    paddingTop: "70px",
+    paddingTop: "90px",
     textAlign: "center",
   },
   form: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    margin: "10px",
+    margin: "20px",
+    marginRight:"30px",
     borderRadius: "15px",
+    // backgroundColor:"white"
   },
   btn: {
     margin: "20px",
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Form = () => {
+const Form = ({funk,re}) => {
   const classes = useStyles();
 
   const [image, setImage] = useState(null);
@@ -57,10 +59,7 @@ const Form = () => {
   const [message, setMessage] = useState("Success uploading Data");
 
   const changeHandler = (e) => {
-    // setImage(e.target.files[0]);
-    getBase64(e.target.files[0], (res) => {
-      setImage(res);
-    });
+    setImage(e.target.files[0]);
   };
 
   const handleClick = () => {
@@ -82,39 +81,41 @@ const Form = () => {
       setMessage("Please fill all the fields");
       handleClick();
     } else {
+      var fd = new FormData();
+      fd.append("image", image);
+      fd.append("title", title);
+      fd.append("creator", creater);
+      fd.append("platform", platform);
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      };
+      const response = await axios.post("/posts", fd, config);
+      // console.log(response)
+      setImage(null);
+      setTitle("");
+      setPlatform("");
+      setCreater("");
       setErr(false);
       setMessage("Success uploading data");
       handleClick();
-      let data = {
-        title:title,
-        platform:platform,
-        creater:creater,
-        file:image
-      }
-      const config={
-        headers:{
-          'Content-type':'application/json'
-        }
-      }
-      const response = await axios.post('/posts',data,config)
-      // console.log(response)
-      setImage(null)
-      setTitle("")
-      setPlatform("")
-      setCreater("")
+      funk(!re)
     }
   };
 
-  function getBase64(file, cb) {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      cb(reader.result);
-    };
-    reader.onerror = (err) => {
-      console.log("ERR: ", err);
-    };
-  }
+  // convert image to base64 but takes a lot of time while fetching pr posting base64 images //
+
+  // function getBase64(file, cb) {
+  //   let reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   reader.onload = () => {
+  //     cb(reader.result);
+  //   };
+  //   reader.onerror = (err) => {
+  //     console.log("ERR: ", err);
+  //   };
+  // }
 
   return (
     <Grid className={classes.cont} container-fluid="true" xs={12} lg={3}>
@@ -157,7 +158,7 @@ const Form = () => {
         {image ? (
           <img
             className={classes.preview}
-            src={image}
+            src={URL.createObjectURL(image)}
             alt="preview"
           ></img>
         ) : null}

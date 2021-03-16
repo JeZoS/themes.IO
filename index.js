@@ -14,6 +14,7 @@ app.use(cors())
 app.use(morgan('dev'))
 connectDb()
 
+app.use("/uploads", express.static("uploads"));
 app.get('/',(req,res)=>{
     res.send('hello motherfaka')
 })

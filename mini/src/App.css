@@ -1,6 +1,7 @@
 .theme-div {
-  padding-top: 70px;
+  padding-top: 90px;
   /* background-color: rebeccapurple; */
+  overflow: hidden;
 }
 .form-div {
   padding-top: 40px;
@@ -8,6 +9,7 @@
 
 * {
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .hover:hover {
@@ -16,11 +18,21 @@
 }
 
 .hover {
-  transition: 50ms ease;
+  transition: 100ms ease;
 }
 
 img {
 }
 
 body {
+    background-color: #000105;
+    background-image: url("https://www.transparenttextures.com/patterns/dark-geometric.png");}
+
+.rot:hover {
+    padding-top: 100px;
+    transform: rotate(360deg) scale(1.5);
+    overflow: hidden;
+}
+.rot{
+    transition: 500ms ease-in-out;
 }

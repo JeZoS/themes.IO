@@ -1,0 +1,66 @@
+import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+
+const useStyles = makeStyles({
+  images: {
+    height: "90vh",
+    // backgroundColor: "white",
+  },
+  cent: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "black",
+    // overflow:"hidden"
+  },
+  text: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#000105",
+    backgroundImage:
+      'url("https://www.transparenttextures.com/patterns/dark-geometric.png")',
+  },
+});
+
+const Theme = () => {
+  const classes = useStyles();
+  const [theme, setTheme] = useState({});
+  const params = useParams();
+  useEffect(() => {
+    const fetchSingle = async () => {
+      const { data } = await axios.get(`/posts/${params.id}`);
+      setTheme({ ...data });
+      console.log(theme);
+    };
+    fetchSingle();
+  }, [params.id]);
+  return (
+    <div style={{ paddingTop: "60px", flexGrow: "1" }}>
+      <Grid container spacing={3}>
+        <Grid item className={classes.cent} xs="12" sm={6}>
+          <img
+            className={`${classes.images} rot`}
+            src={"/uploads/" + theme.file}
+            alt="themesImage"
+          ></img>
+        </Grid>
+        <Grid item sm={6} xs="12" className={classes.text}>
+          <Typography variant="h2">{theme.title}</Typography>
+          <Typography variant="h5">By: {theme.creator}</Typography>
+          <Typography
+            variant="p"
+            style={{ width: "400px", textAlign: "center", marginTop: "15px" }}
+          >
+            Created with KWGT , Wallpaper from Zedge, Icon from Zetta Icons Pro
+          </Typography>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
+
+export default Theme;
