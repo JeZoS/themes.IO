@@ -1,16 +1,14 @@
 import {
-  Container,
   AppBar,
   Typography,
-  Grow,
   Grid,
   makeStyles,
   Toolbar,
-  IconButton,
 } from "@material-ui/core";
 
 import "./App.css";
-
+import Form from "./components/form/Form";
+import Themes from "./components/themes/Themes";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -22,13 +20,17 @@ function App() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar elevation="off"  position="static">
         <Toolbar variant="dense">
-          <Typography variant="h5" color="inherit">
+          <Typography variant="h6" color="inherit">
             Themes
           </Typography>
         </Toolbar>
       </AppBar>
+      <Grid container>
+        <Themes />
+        <Form />
+      </Grid>
     </div>
   );
 }
