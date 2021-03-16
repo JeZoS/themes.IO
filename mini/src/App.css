@@ -1,19 +1,26 @@
-.theme-div{
-    padding-top: 40px;
-    /* background-color: rebeccapurple; */
+.theme-div {
+  padding-top: 70px;
+  /* background-color: rebeccapurple; */
 }
-.form-div{
-    padding-top: 40px;
+.form-div {
+  padding-top: 40px;
 }
 
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
+}
+
+.hover:hover {
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+.hover {
+  transition: 50ms ease;
 }
 
 img {
-
 }
 
 body {
-    /* background-color:lightslategray; */
 }

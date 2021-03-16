@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const themeSchema = mongoose.Schema({
   title: String,
-  Description: String,
+  platform: String,
   creator: String,
   tags: [String],
   file: String,

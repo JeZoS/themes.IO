@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div className={classes.root}>
-      <AppBar elevation="off"  position="static">
+      <AppBar elevation={0}  position="fixed">
         <Toolbar variant="dense">
           <Typography variant="h6" color="inherit">
             Themes

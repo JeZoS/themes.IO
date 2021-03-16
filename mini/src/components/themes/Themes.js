@@ -4,16 +4,17 @@ import {
   GridListTile,
   GridListTileBar,
   makeStyles,
-  Typography,
 } from "@material-ui/core";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const useStyles = makeStyles({
   gridList: {
     padding: "5px",
     width: "100%",
-    alignItems:"center",
-    justifyContent:'space-around'
+    alignItems: "center",
+    justifyContent: "center",
+    overflow:"hidden"
   },
   root: {
     display: "flex",
@@ -24,6 +25,7 @@ const useStyles = makeStyles({
 
 const Themes = () => {
   const [col, setCol] = useState(window.innerWidth / 400);
+  const [themes, setThemes] = useState([]);
   const classes = useStyles();
 
   const handleResize = () => {
@@ -32,27 +34,33 @@ const Themes = () => {
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
+    const fetchThemes = async () => {
+      const { data } = await axios.get("/posts");
+      setThemes(data);
+      console.log(data);
+    };
+    fetchThemes();
   }, []);
 
-  const arr = ["m", "a", "s", "i", "f", "sed", "ad", "f", "sed", "ad"];
+  // const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"];
 
   return (
     <Grid xs={12} lg={9} className={"theme-div"}>
       {/* <div className={classes.root}> */}
-        <GridList className={classes.gridList} cols={col}>
-          {arr.map((el) => (
-            <GridListTile>
-              <img
-                src="https://wallpapercave.com/wp/wp8746212.jpg"
-                alt="img"
-              ></img>
-              <GridListTileBar
-                title="Prabhat"
-                subtitle={<span>by: JeZoS</span>}
-              />
-            </GridListTile>
-          ))}
-        </GridList>
+      <GridList className={classes.gridList} cols={col}>
+        {themes.map((el, idx) => (
+          <GridListTile key={idx} className="hover" > 
+            <img
+              src={el.file}
+              alt="img"
+            ></img>
+            <GridListTileBar
+              title={el.title}
+              subtitle={<span>by: {el.creator}</span>}
+            />
+          </GridListTile>
+        ))}
+      </GridList>
       {/* </div> */}
     </Grid>
   );

@@ -11,9 +11,17 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-const createPost = (req, res) => {
+const createPost = async (req, res) => {
+  const { title, platform, file, creater } = req.body;
   try {
-    //   const {title,description,}
+    const theme = new Theme({
+      title,
+      platform,
+      creator:creater,
+      file,
+    });
+    const newTheme = await theme.save();
+    res.status(200).json({ message: "Created", theme: newTheme });
   } catch (err) {
     res.status(404).json({
       message: err.message,
