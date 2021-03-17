@@ -15,10 +15,14 @@ app.use(morgan('dev'))
 connectDb()
 
 app.use("/uploads", express.static("uploads"));
-app.get('/',(req,res)=>{
-    res.send('hello motherfaka')
-})
+
 app.use('/posts',getPosts)
+
+const root = require("path").join(__dirname, "mini", "build");
+app.use(express.static(root));
+app.get("*", (req, res) => {
+  res.sendFile("index.html", { root });
+});
 
 app.listen(process.env.PORT || 4000, () => {
   console.log("Server started on port 5000");
