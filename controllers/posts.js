@@ -50,22 +50,27 @@ const editPost = async (req, res) => {
       theme.platform = req.body.platform;
     }
     const saved = await theme.save();
-    console.log(saved);
     res.status(200).json({ saved });
   } catch (err) {
     console.log(err);
     res.status(404).json({ error: err });
   }
-
-  // const theme = new Theme(req.body)
-  // const created = await theme.save()
-  // console.log(created)
-  // const del = await Theme.findByIdAndRemove(req.params.id)
-  // console.log(del)
-  // res.send("ok");
 };
 
-const deletePost = (req, res) => {};
+const deletePost = async (req, res) => {
+  try {
+    const theme = await Theme.findById(req.params.id);
+    if (theme) {
+      await Theme.findByIdAndRemove(req.params.id);
+      res.status(200).json({ Message: "Theme Removed" });
+    } else {
+      res.status(200).json({ Message: "No Such Theme Exists" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
 
 module.exports = {
   getAllPosts,

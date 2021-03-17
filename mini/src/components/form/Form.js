@@ -90,16 +90,22 @@ const Form = ({ funk, re }) => {
           "Content-type": "multipart/form-data",
         },
       };
-      const response = await axios.post("/posts", fd, config);
-      // console.log(response)
-      setImage(null);
-      setTitle("");
-      setPlatform("");
-      setCreater("");
-      setErr(false);
-      setMessage("Success uploading data");
-      handleClick();
-      funk(!re);
+      try {
+        const response = await axios.post("/posts", fd, config);
+        // console.log(response)
+        setImage(null);
+        setTitle("");
+        setPlatform("");
+        setCreater("");
+        setErr(false);
+        setMessage("Success uploading data");
+        handleClick();
+        funk(!re);
+      } catch (error) {
+        setErr(true);
+        setMessage("Server Error");
+        handleClick();
+      }
     }
   };
 

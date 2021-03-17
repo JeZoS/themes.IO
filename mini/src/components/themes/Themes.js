@@ -111,6 +111,15 @@ const Themes = ({ re }) => {
     setOpenModal(false);
   };
 
+  const deleteTheme = async (id) => {
+    try {
+      const { data } = await axios.delete(`posts/${id}`);
+      setRender(!render);
+    } catch (err) {
+      setRender(!render);
+    }
+  };
+
   return (
     <Grid xs={12} lg={9} className={"theme-div"}>
       <GridList className={classes.gridList} cols={col}>
@@ -137,7 +146,7 @@ const Themes = ({ re }) => {
                     <IconButton onClick={() => showModal(el)}>
                       <Edit color="primary" />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={() => deleteTheme(el._id)}>
                       <Delete color="error" />
                     </IconButton>
                   </div>
@@ -174,7 +183,6 @@ const Mod = ({ openM, closeModal, element, setRender }) => {
 
   const changeImageHandler = (e) => {
     setModalImage(e.target.files[0]);
-    console.log(modalImage);
   };
 
   const handleClick = () => {
@@ -182,8 +190,8 @@ const Mod = ({ openM, closeModal, element, setRender }) => {
     setTimeout(() => {
       closeModal();
       setRender((prev) => !prev);
+      setOpen(false);
     }, [1000]);
-    // closeModal();
   };
 
   const handleClose = () => {
@@ -195,15 +203,18 @@ const Mod = ({ openM, closeModal, element, setRender }) => {
   useEffect(() => {
     const fetchTheme = async () => {
       if (!element._id) return;
-      const { data } = await axios.get(`/posts/${element._id}`);
-      if (data && data.file) {
-        setModalImage(null);
-        setThemeId(data._id);
-        setTitle(data.title);
-        setCreater(data.creator);
-        setPlatform(data.platform);
-        console.log("hit");
-        console.log(data);
+      try {
+        const { data } = await axios.get(`/posts/${element._id}`);
+        if (data && data.file) {
+          setModalImage(null);
+          setOpen(false);
+          setThemeId(data._id);
+          setTitle(data.title);
+          setCreater(data.creator);
+          setPlatform(data.platform);
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
     fetchTheme();
@@ -229,17 +240,17 @@ const Mod = ({ openM, closeModal, element, setRender }) => {
           "Content-type": "multipart/form-data",
         },
       };
-      const response = await axios.patch(`/posts/${themeId}`, fd, config);
-      // console.log(response)
-      setModalImage(null);
-      // setTitle("");
-      // setPlatform("");
-      // setCreater("");
-      setErr(false);
-      setMessage("Success uploading data");
-      handleClick();
-
-      // funk(!re);
+      try {
+        const response = await axios.patch(`/posts/${themeId}`, fd, config);
+        setModalImage(null);
+        setErr(false);
+        setMessage("Success uploading data");
+        handleClick();
+      } catch (err) {
+        setErr(true);
+        setMessage("Server Error");
+        handleClick();
+      }
     }
   };
 
