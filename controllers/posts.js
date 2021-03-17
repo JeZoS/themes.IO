@@ -41,12 +41,28 @@ const createPost = async (req, res) => {
 };
 
 const editPost = async (req, res) => {
-  const theme = new Theme(req.body)
-  const created = await theme.save()
-  console.log(created)
-  const del = await Theme.findByIdAndRemove(req.params.id)
-  console.log(del)
-  res.send("ok");
+  try {
+    const theme = await Theme.findById(req.params.id);
+    if (theme) {
+      theme.file = req.body.file;
+      theme.title = req.body.title;
+      theme.creator = req.body.creator;
+      theme.platform = req.body.platform;
+    }
+    const saved = await theme.save();
+    console.log(saved);
+    res.status(200).json({ saved });
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ error: err });
+  }
+
+  // const theme = new Theme(req.body)
+  // const created = await theme.save()
+  // console.log(created)
+  // const del = await Theme.findByIdAndRemove(req.params.id)
+  // console.log(del)
+  // res.send("ok");
 };
 
 const deletePost = (req, res) => {};
