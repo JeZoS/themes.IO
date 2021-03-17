@@ -31,7 +31,7 @@ const router = express.Router();
 router.get("/", getAllPosts);
 router.get("/:id", getSinglePost);
 router.post("/", upload.any(), createPost);
-router.patch("/", editPost);
+router.patch("/:id", upload.any(), editPost);
 router.delete("/", deletePost);
 
 module.exports = router;

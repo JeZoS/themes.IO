@@ -1,4 +1,4 @@
-import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button, Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -50,13 +50,15 @@ const Theme = () => {
         </Grid>
         <Grid item sm={6} xs="12" className={classes.text}>
           <Typography variant="h2">{theme.title}</Typography>
-          <Typography variant="h5">By: {theme.creator}</Typography>
+          <Typography color='secondary' variant="h5">By: {theme.creator}</Typography>
           <Typography
             variant="p"
-            style={{ width: "400px", textAlign: "center", marginTop: "15px" }}
+            color='error'
+            style={{ maxWidth: "400px", textAlign: "center", marginTop: "15px" }}
           >
             Created with KWGT , Wallpaper from Zedge, Icon from Zetta Icons Pro
           </Typography>
+          <Button color='primary' variant='outlined' style={{marginTop:"1rem"}} >Download Resources</Button>
         </Grid>
       </Grid>
     </div>

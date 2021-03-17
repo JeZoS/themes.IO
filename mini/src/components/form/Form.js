@@ -29,9 +29,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     margin: "20px",
-    marginRight:"30px",
+    marginRight: "30px",
     borderRadius: "15px",
-    // backgroundColor:"white"
   },
   btn: {
     margin: "20px",
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Form = ({funk,re}) => {
+const Form = ({ funk, re }) => {
   const classes = useStyles();
 
   const [image, setImage] = useState(null);
@@ -100,7 +99,7 @@ const Form = ({funk,re}) => {
       setErr(false);
       setMessage("Success uploading data");
       handleClick();
-      funk(!re)
+      funk(!re);
     }
   };
 
@@ -150,6 +149,7 @@ const Form = ({funk,re}) => {
           <Button
             className={classes.upldbtn}
             variant="outlined"
+            color="secondary"
             component="span"
           >
             Upload Image File

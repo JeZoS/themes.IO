@@ -51,7 +51,7 @@ const Navbar = () => {
     <AppBar elevation={0} position="fixed">
       <Toolbar variant="dense">
         <Typography variant="h6" color="inherit">
-          Themes
+          Themes.IO
         </Typography>
       </Toolbar>
     </AppBar>
