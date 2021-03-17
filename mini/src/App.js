@@ -15,6 +15,7 @@ import Theme from "./components/themes/theme/Theme";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    paddingBottom:"20px"
   },
 }));
 
