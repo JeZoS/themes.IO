@@ -20,11 +20,11 @@ app.use("/uploads", express.static("uploads"));
 app.use("/posts", getPosts);
 app.use("/user", authUser);
 
-// const root = require("path").join(__dirname, "mini", "build");
-// app.use(express.static(root));
-// app.get("*", (req, res) => {
-//   res.sendFile("index.html", { root });
-// });
+const root = require("path").join(__dirname, "mini", "build");
+app.use(express.static(root));
+app.get("*", (req, res) => {
+  res.sendFile("index.html", { root });
+});
 
 app.listen(process.env.PORT || 4000, () => {
   console.log("Server started on port 5000");
