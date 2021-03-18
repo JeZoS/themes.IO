@@ -79,7 +79,7 @@ const Form = () => {
       setImage(null);
       setTitle("");
       setPlatform("");
-      setCreater("");
+      // setCreater("");
     }
   };
 
@@ -112,12 +112,12 @@ const Form = () => {
           id="filled-basic"
           label="Platform"
         ></TextField>
-        <TextField
+        {/* <TextField
           value={creater}
           onChange={(e) => setCreater(e.target.value)}
           id="filled-basic"
           label="Creater"
-        ></TextField>
+        ></TextField> */}
         <label htmlFor="btn-upload">
           <input
             id="btn-upload"

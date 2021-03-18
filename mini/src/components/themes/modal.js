@@ -48,7 +48,7 @@ const Mod = ({ openM, closeModal, element }) => {
       });
       return;
     }
-    if (title.length === 0 || platform.length === 0 || creater.length === 0) {
+    if (title.length === 0 || platform.length === 0 ) {
       dispatch({
         type: "ERROR",
         payload: "All fields are required!",
@@ -85,12 +85,12 @@ const Mod = ({ openM, closeModal, element }) => {
             id="filled-basic"
             label="Platform"
           ></TextField>
-          <TextField
+          {/* <TextField
             value={creater}
             onChange={(e) => setCreater(e.target.value)}
             id="filled-basic"
             label="Creater"
-          ></TextField>
+          ></TextField> */}
           <label htmlFor="btnn-upload">
             <input
               id="btnn-upload"

@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { LockOutlined } from "@material-ui/icons";
 import AuthModal from "./authModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +33,7 @@ function Navbar() {
   const [auth, setAuth] = React.useState(loggedIn);
 
   useEffect(() => {
-      setAuth(loggedIn)
+    setAuth(loggedIn);
   }, [loggedIn]);
 
   const closeModal = () => {
@@ -46,6 +46,15 @@ function Navbar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const dispatch = useDispatch();
+
+  const logoutHandler = () => {
+    dispatch({
+      type: "LOGOUT",
+    });
+    handleClose();
   };
 
   return (
@@ -75,8 +84,8 @@ function Navbar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
+                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
               </Menu>
               <Typography variant="h6">{user.username}</Typography>
             </div>

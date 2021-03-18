@@ -97,6 +97,7 @@ const AuthModal = ({ open, closeModal }) => {
             onChange={(e) => setPassword(e.target.value)}
             id="filled-basic"
             label="Password"
+            type="password"
           ></TextField>
           {login ? null : (
             <Zoom in={true}>
@@ -105,6 +106,7 @@ const AuthModal = ({ open, closeModal }) => {
                 onChange={(e) => setConPassword(e.target.value)}
                 id="filled-basic"
                 label="Confirm-Password"
+                type="password"
               ></TextField>
             </Zoom>
           )}
