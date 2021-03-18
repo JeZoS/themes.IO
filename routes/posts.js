@@ -1,4 +1,5 @@
 const express = require("express");
+const verifyUser = require("../middleware/verifyUser");
 const {
   getAllPosts,
   getSinglePost,

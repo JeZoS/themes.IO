@@ -8,9 +8,10 @@ import {
 } from "@material-ui/core";
 
 import MuiAlert from "@material-ui/lab/Alert";
-import axios from "axios";
 
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createTheme } from "../../actions/themeActions";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Form = ({ funk, re }) => {
+const Form = () => {
   const classes = useStyles();
 
   const [image, setImage] = useState(null);
@@ -69,6 +70,8 @@ const Form = ({ funk, re }) => {
     setOpen(false);
   };
 
+  const dispatch = useDispatch();
+
   const onSubmitHandler = async () => {
     if (
       image === null ||
@@ -85,27 +88,14 @@ const Form = ({ funk, re }) => {
       fd.append("title", title);
       fd.append("creator", creater);
       fd.append("platform", platform);
-      const config = {
-        headers: {
-          "Content-type": "multipart/form-data",
-        },
-      };
-      try {
-        const response = await axios.post("/posts", fd, config);
-        // console.log(response)
-        setImage(null);
-        setTitle("");
-        setPlatform("");
-        setCreater("");
-        setErr(false);
-        setMessage("Success uploading data");
-        handleClick();
-        funk(!re);
-      } catch (error) {
-        setErr(true);
-        setMessage("Server Error");
-        handleClick();
-      }
+      dispatch(createTheme(fd));
+      setImage(null);
+      setTitle("");
+      setPlatform("");
+      setCreater("");
+      setErr(false);
+      setMessage("Success uploading data");
+      handleClick();
     }
   };
 

@@ -3,11 +3,11 @@ const Theme = require("../models/themes");
 const getAllPosts = async (req, res) => {
   try {
     const allThemes = await Theme.find();
-    res.status(200).json(allThemes);
+    res.status(200).send(allThemes);
   } catch (err) {
     console.log(err);
     res.status(404).json({
-      message: err.message,
+      error: err,
     });
   }
 };
@@ -31,11 +31,11 @@ const createPost = async (req, res) => {
       creator,
       file,
     });
-    const newTheme = await theme.save();
-    res.status(200).json({ message: "Created", theme: newTheme });
+    await theme.save();
+    res.status(200).json({ Message: "Theme Created"});
   } catch (err) {
     res.status(404).json({
-      message: err.message,
+      error: err,
     });
   }
 };
@@ -50,7 +50,7 @@ const editPost = async (req, res) => {
       theme.platform = req.body.platform;
     }
     const saved = await theme.save();
-    res.status(200).json({ saved });
+    res.status(200).json({ Message : "Removed" });
   } catch (err) {
     console.log(err);
     res.status(404).json({ error: err });
@@ -58,17 +58,14 @@ const editPost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
+  console.log("hit delete")
   try {
     const theme = await Theme.findById(req.params.id);
-    if (theme) {
-      await Theme.findByIdAndRemove(req.params.id);
-      res.status(200).json({ Message: "Theme Removed" });
-    } else {
-      res.status(200).json({ Message: "No Such Theme Exists" });
-    }
+    await Theme.findByIdAndRemove(req.params.id);
+    res.status(200).json({ Message: "Theme Removed" });
   } catch (err) {
     console.log(err);
-    res.status(500).json(err);
+    res.status(500).json({ error: err });
   }
 };
 
