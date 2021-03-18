@@ -1,4 +1,4 @@
-import { Button, Container, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -6,14 +6,12 @@ import { useParams } from "react-router";
 const useStyles = makeStyles({
   images: {
     height: "90vh",
-    // backgroundColor: "white",
   },
   cent: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "black",
-    // overflow:"hidden"
   },
   text: {
     display: "flex",
@@ -37,6 +35,7 @@ const Theme = () => {
       console.log(theme);
     };
     fetchSingle();
+    // eslint-disable-next-line
   }, [params.id]);
   return (
     <div style={{ paddingTop: "60px", flexGrow: "1" }}>
@@ -50,15 +49,27 @@ const Theme = () => {
         </Grid>
         <Grid item sm={6} xs="12" className={classes.text}>
           <Typography variant="h2">{theme.title}</Typography>
-          <Typography color='secondary' variant="h5">By: {theme.creator}</Typography>
+          <Typography color="secondary" variant="h5">
+            By: {theme.creator}
+          </Typography>
           <Typography
             variant="p"
-            color='error'
-            style={{ maxWidth: "400px", textAlign: "center", marginTop: "15px" }}
+            color="error"
+            style={{
+              maxWidth: "400px",
+              textAlign: "center",
+              marginTop: "15px",
+            }}
           >
             Created with KWGT , Wallpaper from Zedge, Icon from Zetta Icons Pro
           </Typography>
-          <Button color='primary' variant='outlined' style={{marginTop:"1rem"}} >Download Resources</Button>
+          <Button
+            color="primary"
+            variant="outlined"
+            style={{ marginTop: "1rem" }}
+          >
+            Download Resources
+          </Button>
         </Grid>
       </Grid>
     </div>

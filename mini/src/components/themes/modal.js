@@ -1,13 +1,6 @@
-import {
-  Button,
-  makeStyles,
-  Modal,
-  Snackbar,
-  TextField,
-} from "@material-ui/core";
+import { Button, makeStyles, Modal, TextField } from "@material-ui/core";
 import { useState } from "react";
-import MuiAlert from "@material-ui/lab/Alert";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editTheme } from "../../actions/themeActions";
 
 const useStyles = makeStyles({
@@ -16,7 +9,6 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     margin: "20px",
-    borderRadius: "15px",
   },
   btn: {
     margin: "20px",
@@ -31,23 +23,12 @@ const useStyles = makeStyles({
     margin: "10px",
   },
 });
-//
-//
-//
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-//
-//
-//
+
 const Mod = ({ openM, closeModal, element }) => {
   const [modalImage, setModalImage] = useState(null);
   const [title, setTitle] = useState(element.title);
   const [platform, setPlatform] = useState(element.platform);
   const [creater, setCreater] = useState(element.creator);
-  const [open, setOpen] = useState(false);
-  const [err, setErr] = useState(false);
-  const [message, setMessage] = useState("Success uploading Data");
 
   const classes = useStyles();
 
@@ -55,25 +36,23 @@ const Mod = ({ openM, closeModal, element }) => {
     setModalImage(e.target.files[0]);
   };
 
-  const handleClick = () => {
-    setOpen(true);
-    setTimeout(() => {
-      closeModal();
-      setOpen(false);
-    }, [1000]);
-  };
-
   const dispatch = useDispatch();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { loggedIn, user } = useSelector((state) => state.user);
 
   const onSubmitHandler = async () => {
+    if (!loggedIn) {
+      dispatch({
+        type: "ERROR",
+        payload: "Please login first",
+      });
+      return;
+    }
     if (title.length === 0 || platform.length === 0 || creater.length === 0) {
-      setErr(true);
-      setMessage("Please fill all the fields");
-      handleClick();
+      dispatch({
+        type: "ERROR",
+        payload: "All fields are required!",
+      });
     } else {
       var fd = new FormData();
       if (modalImage) {
@@ -82,20 +61,11 @@ const Mod = ({ openM, closeModal, element }) => {
         fd.append("file", element.file);
       }
       fd.append("title", title);
-      fd.append("creator", creater);
+      fd.append("creator", user.username);
       fd.append("platform", platform);
-
-      try {
-        dispatch(editTheme(fd, element._id));
-        setModalImage(null);
-        setErr(false);
-        setMessage("Success uploading data");
-        handleClick();
-      } catch (err) {
-        setErr(true);
-        setMessage("Server Error");
-        handleClick();
-      }
+      dispatch(editTheme(fd, element._id));
+      setModalImage(null);
+      closeModal();
     }
   };
 
@@ -156,11 +126,6 @@ const Mod = ({ openM, closeModal, element }) => {
             Submit
           </Button>
         </form>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity={err ? "error" : "success"}>
-            {message}
-          </Alert>
-        </Snackbar>
       </div>
     </Modal>
   );

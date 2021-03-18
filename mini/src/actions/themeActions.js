@@ -8,7 +8,7 @@ export const getAllThemes = () => async (dispatch) => {
     const { data } = await axios.get("/posts/");
     if (data.error) {
       dispatch({
-        type: "THEME_LIST_SUCCESS",
+        type: "THEME_LIST_FAIL",
         payload: data.error,
       });
     } else {
@@ -22,17 +22,27 @@ export const getAllThemes = () => async (dispatch) => {
       type: "LIST_REQUEST_FAIL",
       payload: "Cannot Send Request Right Now",
     });
+    dispatch({
+      type: "ERROR",
+      payload: "Cannot Send Request Right Now",
+    });
   }
 };
 
-export const createTheme = (formData) => async (dispatch) => {
+export const createTheme = (formData) => async (dispatch, getState) => {
   try {
     dispatch({
       type: "CREATE_REQUEST",
     });
+
+    const {
+      user: { user },
+    } = getState();
+
     const config = {
       headers: {
         "Content-type": "multipart/form-data",
+        Authorization: `Bearer ${user.token}`,
       },
     };
     const { data } = await axios.post("/posts", formData, config);
@@ -41,9 +51,17 @@ export const createTheme = (formData) => async (dispatch) => {
         type: "CREATE_FAIL",
         payload: data.error,
       });
+      dispatch({
+        type: "ERROR",
+        payload: data.error,
+      });
     } else {
       dispatch({
         type: "CREATE_SUCCESS",
+      });
+      dispatch({
+        type: "SUCCESS",
+        payload: "Theme Uploaded",
       });
     }
   } catch (err) {
@@ -51,17 +69,26 @@ export const createTheme = (formData) => async (dispatch) => {
       type: "CREATE_FAIL",
       payload: "Cannot Send Request Right Now",
     });
+    dispatch({
+      type: "ERROR",
+      payload: "Cannot Send Request Right Now",
+    });
   }
 };
 
-export const editTheme = (formData, id) => async (dispatch) => {
+export const editTheme = (formData, id) => async (dispatch,getState) => {
   try {
     dispatch({
       type: "EDIT_REQUEST",
     });
+    const {
+      user: { user },
+    } = getState();
+
     const config = {
       headers: {
         "Content-type": "multipart/form-data",
+        Authorization: `Bearer ${user.token}`,
       },
     };
     const { data } = await axios.patch(`/posts/${id}`, formData, config);
@@ -70,9 +97,17 @@ export const editTheme = (formData, id) => async (dispatch) => {
         type: "EDIT_FAIL",
         payload: data.error,
       });
+      dispatch({
+        type: "ERROR",
+        payload: data.error,
+      });
     } else {
       dispatch({
         type: "EDIT_SUCCESS",
+      });
+      dispatch({
+        type: "SUCCESS",
+        payload: "Theme data Update",
       });
     }
   } catch (err) {
@@ -80,28 +115,54 @@ export const editTheme = (formData, id) => async (dispatch) => {
       type: "EDIT_FAIL",
       payload: "Cannot Send Request Right Now",
     });
+    dispatch({
+      type: "ERROR",
+      payload: "Cannot Send Request Right Now",
+    });
   }
 };
 
-export const deleteTheme = (id) => async (dispatch) => {
+export const deleteTheme = (id) => async (dispatch,getState) => {
   try {
     dispatch({
       type: "DELETE_REQUEST",
     });
-    const { data } = await axios.delete(`/posts/${id}`);
+    const {
+      user: { user },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    const { data } = await axios.delete(`/posts/${id}`,config);
     if (data.error) {
       dispatch({
         type: "DELETE_FAIL",
+        payload: data.error,
+      });
+      dispatch({
+        type: "ERROR",
         payload: data.error,
       });
     } else {
       dispatch({
         type: "DELETE_SUCCESS",
       });
+      dispatch({
+        type: "SUCCESS",
+        payload: "Deleted",
+      });
     }
   } catch (err) {
     dispatch({
       type: "DELETE_FAIL",
+      payload: "Cannot Send Request Right Now",
+    });
+    dispatch({
+      type: "ERROR",
       payload: "Cannot Send Request Right Now",
     });
   }

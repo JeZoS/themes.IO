@@ -2,20 +2,13 @@ import {
   Button,
   Grid,
   makeStyles,
-  Snackbar,
   TextField,
   Typography,
 } from "@material-ui/core";
 
-import MuiAlert from "@material-ui/lab/Alert";
-
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTheme } from "../../actions/themeActions";
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,48 +47,39 @@ const Form = () => {
   const [title, setTitle] = useState("");
   const [platform, setPlatform] = useState("");
   const [creater, setCreater] = useState("");
-  const [open, setOpen] = useState(false);
-  const [err, setErr] = useState(false);
-  const [message, setMessage] = useState("Success uploading Data");
 
   const changeHandler = (e) => {
     setImage(e.target.files[0]);
   };
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const dispatch = useDispatch();
 
+  const { loggedIn, user } = useSelector((state) => state.user);
+
   const onSubmitHandler = async () => {
-    if (
-      image === null ||
-      title.length === 0 ||
-      platform.length === 0 ||
-      creater.length === 0
-    ) {
-      setErr(true);
-      setMessage("Please fill all the fields");
-      handleClick();
+    if (!loggedIn) {
+      dispatch({
+        type: "ERROR",
+        payload: "Please login first",
+      });
+      return;
+    }
+    if (image === null || title.length === 0 || platform.length === 0) {
+      dispatch({
+        type: "ERROR",
+        payload: "All fileds are required",
+      });
     } else {
       var fd = new FormData();
       fd.append("image", image);
       fd.append("title", title);
-      fd.append("creator", creater);
+      fd.append("creator", user.username);
       fd.append("platform", platform);
       dispatch(createTheme(fd));
       setImage(null);
       setTitle("");
       setPlatform("");
       setCreater("");
-      setErr(false);
-      setMessage("Success uploading data");
-      handleClick();
     }
   };
 
@@ -167,11 +151,6 @@ const Form = () => {
           Submit
         </Button>
       </form>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={err ? "error" : "success"}>
-          {message}
-        </Alert>
-      </Snackbar>
     </Grid>
   );
 };

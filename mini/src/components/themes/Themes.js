@@ -51,7 +51,6 @@ const Themes = () => {
   const handleClick = async (id) => {
     history.push("/posts/" + id);
   };
-
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
 
@@ -63,11 +62,12 @@ const Themes = () => {
   const { loading: fromDeleteState } = useSelector((state) => state.delete);
   const { loading: fromCreateState } = useSelector((state) => state.create);
   const { loading: fromEditState } = useSelector((state) => state.edit);
+  const { loggedIn, user } = useSelector((state) => state.user);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     dispatch(getAllThemes());
-  }, [dispatch, fromDeleteState, fromCreateState, fromEditState]);
+  }, [dispatch, fromDeleteState, fromCreateState, fromEditState, loggedIn]);
 
   const [element, setElement] = useState();
 
@@ -103,11 +103,45 @@ const Themes = () => {
                 subtitle={<span>by: {el.creator}</span>}
                 actionIcon={
                   <div>
-                    <IconButton onClick={() => showModal(el)}>
-                      <Edit color="primary" />
+                    <IconButton
+                      onClick={() => showModal(el)}
+                      disabled={
+                        loggedIn
+                          ? user.username === el.creator
+                            ? false
+                            : true
+                          : true
+                      }
+                    >
+                      <Edit
+                        color={
+                          loggedIn
+                            ? user.username === el.creator
+                              ? "primary"
+                              : "disabled"
+                            : "disabled"
+                        }
+                      />
                     </IconButton>
-                    <IconButton onClick={() => deleteThemeHandler(el._id)}>
-                      <Delete color="error" />
+                    <IconButton
+                      onClick={() => deleteThemeHandler(el._id)}
+                      disabled={
+                        loggedIn
+                          ? user.username === el.creator
+                            ? false
+                            : true
+                          : true
+                      }
+                    >
+                      <Delete
+                        color={
+                          loggedIn
+                            ? user.username === el.creator
+                              ? "error"
+                              : "disabled"
+                            : "disabled"
+                        }
+                      />
                     </IconButton>
                   </div>
                 }

@@ -10,6 +10,7 @@ const loginUser = async (req, res) => {
       res.json({ error: "Invalid Creds" });
     } else {
       if (await bcrypt.compare(password, user.password)) {
+        // console.log('success')
         res.json({
           id: user._id,
           username: user.username,
@@ -30,9 +31,14 @@ const registerUser = async (req, res) => {
   var { email, password, username } = req.body;
   try {
     const nuser = await User.findOne({ email });
+    const userNameUser = await User.findOne({ username });
     if (nuser) {
       res.send({
-        error: "User Already Exists",
+        error: "User with email already exists",
+      });
+    } else if (userNameUser) {
+      res.send({
+        error: "Username not available",
       });
     } else {
       const salt = await bcrypt.genSalt(10);

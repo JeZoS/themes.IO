@@ -31,8 +31,8 @@ const router = express.Router();
 
 router.get("/", getAllPosts);
 router.get("/:id", getSinglePost);
-router.post("/", upload.any(), createPost);
-router.patch("/:id", upload.any(), editPost);
-router.delete("/:id", deletePost);
+router.post("/", verifyUser, upload.any(), createPost);
+router.patch("/:id", verifyUser, upload.any(), editPost);
+router.delete("/:id", verifyUser, deletePost);
 
 module.exports = router;

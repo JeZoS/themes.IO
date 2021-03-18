@@ -7,12 +7,16 @@ import {
   editTheme,
   themesReducer,
 } from "./reducers/themeReducer";
+import { loginReducer } from "./reducers/userReducer";
+import { alertReducer } from "./reducers/alertReducer";
 
 const reducer = combineReducers({
   themes: themesReducer,
   delete: delTheme,
   create: createTheme,
   edit: editTheme,
+  user: loginReducer,
+  alert: alertReducer,
 });
 
 const initialState = {};
