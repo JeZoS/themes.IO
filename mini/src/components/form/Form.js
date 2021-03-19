@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "5px",
   },
   upldbtn: {
-    margin: "10px",
+    margin: "20px 10px 10px 10px",
   },
 }));
 
@@ -82,19 +82,6 @@ const Form = () => {
       // setCreater("");
     }
   };
-
-  // convert image to base64 but takes a lot of time while fetching pr posting base64 images //
-
-  // function getBase64(file, cb) {
-  //   let reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onload = () => {
-  //     cb(reader.result);
-  //   };
-  //   reader.onerror = (err) => {
-  //     console.log("ERR: ", err);
-  //   };
-  // }
 
   return (
     <Grid className={classes.cont} container-fluid="true" xs={12} lg={3}>

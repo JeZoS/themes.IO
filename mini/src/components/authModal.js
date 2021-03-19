@@ -21,25 +21,12 @@ const useStyles = makeStyles({
     margin: "20px 0",
     cursor: "pointer",
   },
-  btn: {
-    // margin: "20px",
-  },
-  preview: {
-    height: "200px",
-    width: "200px",
-    objectFit: "contain",
-    margin: "5px",
-  },
-  upldbtn: {
-    // margin: "10px",
-  },
 });
 
 const AuthModal = ({ open, closeModal }) => {
   const classes = useStyles();
 
   const [login, setLogin] = useState(true);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conPassword, setConPassword] = useState("");
@@ -50,6 +37,10 @@ const AuthModal = ({ open, closeModal }) => {
   const loginHandler = () => {
     if (login) {
       if (password.length <= 0 || email.length <= 0) {
+        dispatch({
+          type: "ERROR",
+          payload: "All fields are required",
+        });
         return;
       } else {
         dispatch(loginUser(email, password));
@@ -62,8 +53,16 @@ const AuthModal = ({ open, closeModal }) => {
         email.length <= 0 ||
         username.length <= 0
       ) {
+        dispatch({
+          type: "ERROR",
+          payload: "All fields are required",
+        });
         return;
       } else if (password !== conPassword) {
+        dispatch({
+          type: "ERROR",
+          payload: "Password's don't match",
+        });
         return;
       } else {
         dispatch(registerUser(email, username, password));
@@ -81,6 +80,7 @@ const AuthModal = ({ open, closeModal }) => {
             onChange={(e) => setEmail(e.target.value)}
             id="filled-basic"
             label="Email"
+            type="email"
           ></TextField>
           {login ? null : (
             <Zoom in={true}>
@@ -111,15 +111,14 @@ const AuthModal = ({ open, closeModal }) => {
             </Zoom>
           )}
           <Typography
-            variant="p"
-            color="primary"
-            className={classes.changer}
+            variant="caption"
+            color="textPrimary"
+            className={`${classes.changer} LOG-SIG-changer`}
             onClick={() => setLogin(!login)}
           >
             {login ? "Create Account" : "Already have an account"}
           </Typography>
           <Button
-            className={classes.btn}
             variant="contained"
             color="primary"
             onClick={loginHandler}
